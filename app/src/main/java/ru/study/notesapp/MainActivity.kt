@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = CustomRecyclerAdapter(fillList())
-        recyclerView.adapter = CustomRecyclerAdapter(getCatList())
+        //recyclerView.adapter = CustomRecyclerAdapter(fillList())
+        recyclerView.adapter = CustomRecyclerAdapter(getNoteList())
 
         val noteButton: Button = findViewById(R.id.note_button)
         noteButton.setOnClickListener {
@@ -24,14 +24,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fillList(): List<String> {
-        val data = mutableListOf<String>()
-        (0..30).forEach { i -> data.add("$i element") }
-        return data
-    }
+    // private fun fillList(): MutableList<Note> {
+    //     val data = mutableListOf<Note>()
+    //     (0..30).forEach { i -> data.add("$i element") }
+    //     return data
+    // }
 
-    private fun getCatList(): List<String> {
-        return this.resources.getStringArray(R.array.cat_names).toList()
+    private fun getNoteList(): MutableList<Note> {
+        //return this.resources.getStringArray(R.array.cat_names).toList()
+        return StorageNotes.allNotes
     }
 
 

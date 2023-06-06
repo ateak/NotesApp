@@ -26,7 +26,7 @@
         android:text="Description"
         android:textAlignment="center"
         android:textSize="23sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_button"
+        app:layout_constraintBottom_toTopOf="@+id/button_create_note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/button_create_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Создать"

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomRecyclerAdapter(private val names: List<String>) :
+class CustomRecyclerAdapter(private val names: MutableList<Note>) :
     RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -25,7 +25,7 @@ class CustomRecyclerAdapter(private val names: List<String>) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.largeTextView.text = names[position]
-        holder.smallTextView.text = "кот"
+        holder.largeTextView.text = names[position].title
+        holder.smallTextView.text = names[position].description
     }
 }
