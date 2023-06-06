@@ -1,12 +1,12 @@
 package ru.study.notesapp
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 
-class CreateNoteActivity : Activity() {
+class CreateNoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,8 +19,9 @@ class CreateNoteActivity : Activity() {
         buttonCreateNote.setOnClickListener {
             val note = Note(title.text.toString(), description.text.toString())
             StorageNotes.addNote(note)
-            val intent = Intent(this@CreateNoteActivity, MainActivity::class.java)
-            startActivity(intent)
+            // val intent = Intent(this@CreateNoteActivity, MainActivity::class.java)
+            // startActivity(intent)
+            finish()
         }
     }
 }
