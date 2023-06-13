@@ -1,5 +1,6 @@
 package ru.study.notesapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -11,17 +12,23 @@ class CreateNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.create_note_activity)
+        initViews()
+    }
+
+    private fun initViews() {
 
         val title: EditText = findViewById(R.id.title)
         val description: EditText = findViewById(R.id.description)
 
-        val buttonCreateNote: Button = findViewById(R.id.button_create_note)
-        buttonCreateNote.setOnClickListener {
-            val note = Note(title.text.toString(), description.text.toString())
-            StorageNotes.addNote(note)
-            // val intent = Intent(this@CreateNoteActivity, MainActivity::class.java)
-            // startActivity(intent)
-            finish()
+        with(findViewById<Button>(R.id.button_create_note)) {
+            this.setOnClickListener {
+                StorageNotes.addNote(Note(title.text.toString(), description.text.toString()))
+                finish()
+            }
         }
+    }
+
+    companion object {
+        fun newIntent(ctx: Context): Intent = Intent(ctx, CreateNoteActivity::class.java)
     }
 }

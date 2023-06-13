@@ -1,39 +1,50 @@
 package ru.study.notesapp
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var adapter: CustomRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Log.v("MainActivity", "Main activity on create")
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        //recyclerView.adapter = CustomRecyclerAdapter(fillList())
-        recyclerView.adapter = CustomRecyclerAdapter(getNoteList())
+        initViews()
+    }
 
-        val noteButton: Button = findViewById(R.id.note_button)
-        noteButton.setOnClickListener {
-            val intent = Intent(this@MainActivity, CreateNoteActivity::class.java)
-            startActivity(intent)
+    private fun initViews() {
+        initRecyclerView()
+        initButtons()
+    }
+
+    private fun initRecyclerView() {
+        val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
+        adapter = CustomRecyclerAdapter()
+        recyclerView.adapter = adapter
+    }
+
+    private fun initButtons() {
+        findViewById<Button>(R.id.note_button).let {
+            it.setOnClickListener {
+                startActivity(CreateNoteActivity.newIntent(this@MainActivity))
+            }
         }
     }
 
-    // private fun fillList(): MutableList<Note> {
-    //     val data = mutableListOf<Note>()
-    //     (0..30).forEach { i -> data.add("$i element") }
-    //     return data
-    // }
+    override fun onResume() {
 
-    private fun getNoteList(): MutableList<Note> {
-        //return this.resources.getStringArray(R.array.cat_names).toList()
-        return StorageNotes.allNotes
+        super.onResume()
+        Log.v("MainActivity","Main activity onResume notes: ${getNoteList()}")
+
+        adapter.addData(getNoteList())
     }
 
-
+    private fun getNoteList(): MutableList<Note> {
+        return StorageNotes.allNotes
+    }
 }

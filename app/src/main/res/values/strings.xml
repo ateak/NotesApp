@@ -15,4 +15,6 @@
         <item>Масяня</item>
         <item>Симба</item>
     </string-array>
+
+    <string name="new_note">Новая заметка</string>
 </resources>
