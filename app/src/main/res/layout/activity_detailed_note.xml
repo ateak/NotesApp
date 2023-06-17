@@ -25,19 +25,9 @@
         android:textAlignment="center"
         android:textSize="@dimen/description_text_size"
         android:hint="Напиши что-нибудь"
-        app:layout_constraintBottom_toTopOf="@+id/button_create_note"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <Button
-        android:id="@+id/button_create_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Создать"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
 </androidx.constraintlayout.widget.ConstraintLayout>

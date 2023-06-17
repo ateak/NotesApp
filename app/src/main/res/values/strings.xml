@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">NotesApp</string>
+    <string name="new_note">Новая заметка</string>
+
     <string-array name="cat_names">
         <item>Рыжик</item>
         <item>Барсик</item>
@@ -15,6 +17,4 @@
         <item>Масяня</item>
         <item>Симба</item>
     </string-array>
-
-    <string name="new_note">Новая заметка</string>
 </resources>

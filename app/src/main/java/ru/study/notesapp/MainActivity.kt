@@ -1,12 +1,13 @@
 package ru.study.notesapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CustomListener {
 
     private lateinit var adapter: CustomRecyclerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initRecyclerView() {
         val recyclerView: RecyclerView = findViewById(R.id.recycler_view)
-        adapter = CustomRecyclerAdapter()
+        adapter = CustomRecyclerAdapter(this)
         recyclerView.adapter = adapter
     }
 
@@ -46,5 +47,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun getNoteList(): MutableList<Note> {
         return StorageNotes.allNotes
+    }
+
+    override fun onClick(note: Note) {
+        startActivity(Intent(this, DetailsNoteActivity::class.java).putExtra("item_hash", note.hashCode()))
+        //startActivity(Intent(this, DetailedNoteActivity::class.java).putExtra("item", note))
+
     }
 }
