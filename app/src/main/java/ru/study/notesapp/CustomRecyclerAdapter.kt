@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Адаптер для отрисовки элемента заметки в списке
  */
-class CustomRecyclerAdapter(val customListener : CustomListener) : RecyclerView.Adapter<CustomRecyclerAdapter.NoteHolder>() {
+class CustomRecyclerAdapter(val onClick : (Note) -> Unit) : RecyclerView.Adapter<CustomRecyclerAdapter.NoteHolder>() {
 
     private val noteList = mutableListOf<Note>()
 
@@ -38,7 +38,7 @@ class CustomRecyclerAdapter(val customListener : CustomListener) : RecyclerView.
         holder.largeTextView.text = noteList[position].title
         holder.smallTextView.text = noteList[position].description
         holder.itemView.setOnClickListener {
-            customListener.onClick(noteList[position])}
+            onClick(noteList[position])}
         }
 
     /**
