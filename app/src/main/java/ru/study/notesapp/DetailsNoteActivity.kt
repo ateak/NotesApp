@@ -1,6 +1,7 @@
 package ru.study.notesapp
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
@@ -9,6 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
  */
 
 class DetailsNoteActivity : AppCompatActivity() {
+
+    private lateinit var titleEditText: EditText
+    private lateinit var descriptionEditText: EditText
+    private var note : Note? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -16,15 +22,24 @@ class DetailsNoteActivity : AppCompatActivity() {
         initViews()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        Log.v("DetailsNoteActivity","DetailsNote activity onResume notes")
+        note?.title = titleEditText.text.toString()
+        note?.description = descriptionEditText.text.toString()
+       // finish()
+    }
+
     private fun initViews() {
 
-        val title: EditText = findViewById(R.id.title)
-        val description: EditText = findViewById(R.id.description)
+        titleEditText = findViewById(R.id.title)
+        descriptionEditText = findViewById(R.id.description)
 
         val hash = intent.getIntExtra("item_hash", 0)
-        val note = StorageNotes.allNotes.find { it.hashCode() == hash }
-        title.setText(note?.title)
-        description.setText(note?.description)
+        note = StorageNotes.allNotes.find { it.hashCode() == hash }
+        titleEditText.setText(note?.title)
+        descriptionEditText.setText(note?.description)
 
         // другой способ через Serializable
         // val item = intent.getSerializableExtra("item") as Note
