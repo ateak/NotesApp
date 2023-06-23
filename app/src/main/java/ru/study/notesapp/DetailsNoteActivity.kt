@@ -2,8 +2,8 @@ package ru.study.notesapp
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import ru.study.notesapp.databinding.ActivityDetailsNoteBinding
 
 /**
  * Активити для просмотра подробного описания заметки
@@ -11,39 +11,29 @@ import androidx.appcompat.app.AppCompatActivity
 
 class DetailsNoteActivity : AppCompatActivity() {
 
-    private lateinit var titleEditText: EditText
-    private lateinit var descriptionEditText: EditText
-    private var note : Note? = null
+    private lateinit var bindingDetailsNote: ActivityDetailsNoteBinding
+    private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_detailed_note)
+        bindingDetailsNote = ActivityDetailsNoteBinding.inflate(layoutInflater)
+        setContentView(bindingDetailsNote.root)
         initViews()
     }
 
     override fun onPause() {
         super.onPause()
 
-        Log.v("DetailsNoteActivity","DetailsNote activity onResume notes")
-        note?.title = titleEditText.text.toString()
-        note?.description = descriptionEditText.text.toString()
-       // finish()
+        Log.v("DetailsNoteActivity", "DetailsNote activity onResume notes")
+        note?.title = bindingDetailsNote.title.text.toString()
+        note?.description = bindingDetailsNote.description.text.toString()
     }
 
     private fun initViews() {
-
-        titleEditText = findViewById(R.id.title)
-        descriptionEditText = findViewById(R.id.description)
-
         val hash = intent.getIntExtra("item_hash", 0)
         note = StorageNotes.allNotes.find { it.hashCode() == hash }
-        titleEditText.setText(note?.title)
-        descriptionEditText.setText(note?.description)
-
-        // другой способ через Serializable
-        // val item = intent.getSerializableExtra("item") as Note
-        // title.setText(item.title)
-        // description.setText(item.description)
+        bindingDetailsNote.title.setText(note?.title)
+        bindingDetailsNote.description.setText(note?.description)
     }
 }
