@@ -22,14 +22,17 @@ class CreateNoteActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        val db = MainDb.getDb(this)
         with(bindingCreateNote.buttonCreateNote) {
             this.setOnClickListener {
-                StorageNotes.addNote(
-                    Note(
-                        bindingCreateNote.title.text.toString(),
-                        bindingCreateNote.description.text.toString()
-                    )
+                val note = Note(
+                    null,
+                    bindingCreateNote.title.text.toString(),
+                    bindingCreateNote.description.text.toString()
                 )
+                Thread {
+                    db.getDao().addNote(note)
+                }.start()
                 finish()
             }
         }
