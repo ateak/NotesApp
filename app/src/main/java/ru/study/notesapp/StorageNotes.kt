@@ -1,17 +1,33 @@
 package ru.study.notesapp
 
+import android.content.Context
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+
 /**
  * Синглтон для хранения списка заметок
  */
 object StorageNotes {
+    private lateinit var db: MainDb
+    var allNotes: MutableList<Note> = mutableListOf()
 
-    val allNotes = mutableListOf<Note>()
+    fun setDb(context: Context) {
+        db = MainDb.getDb(context)
+    }
+
+    fun loadNotesFromDb(): Flow<List<Note>> = db.getDao().getAllNotes()
 
     fun addNote(note: Note) {
-        allNotes.add(note)
+        GlobalScope.launch {
+            db.getDao().addNote(note)
+        }
     }
 
     fun removeNote(note: Note) {
-        allNotes.remove(note)
+        GlobalScope.launch {
+            db.getDao().deleteNote(note)
+        }
     }
 }
+

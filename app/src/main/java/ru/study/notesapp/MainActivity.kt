@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.coroutineScope
+import kotlinx.coroutines.launch
 import ru.study.notesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,6 +20,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(bindingMain.root)
         Log.v("MainActivity", "Main activity on create")
         initViews()
+        StorageNotes.setDb(this)
+        lifecycle.coroutineScope.launch {
+            StorageNotes.loadNotesFromDb().collect() {
+                StorageNotes.allNotes.clear()
+                StorageNotes.allNotes.addAll(it)
+                adapter.addData(it)
+            }
+        }
     }
 
     private fun initViews() {
@@ -44,10 +54,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         Log.v("MainActivity", "Main activity onResume notes: ${getNoteList()}")
-        adapter.addData(getNoteList())
     }
 
-    private fun getNoteList(): MutableList<Note> {
+    private fun getNoteList(): List<Note> {
         return StorageNotes.allNotes
     }
 }
