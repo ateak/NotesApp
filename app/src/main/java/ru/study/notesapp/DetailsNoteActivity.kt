@@ -28,6 +28,7 @@ class DetailsNoteActivity : AppCompatActivity() {
         Log.v("DetailsNoteActivity", "DetailsNote activity onResume notes")
         note?.title = bindingDetailsNote.title.text.toString()
         note?.description = bindingDetailsNote.description.text.toString()
+        note?.let { StorageNotes.updateNote(it) }
     }
 
     private fun initViews() {

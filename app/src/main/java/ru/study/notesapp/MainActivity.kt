@@ -21,13 +21,7 @@ class MainActivity : AppCompatActivity() {
         Log.v("MainActivity", "Main activity on create")
         initViews()
         StorageNotes.setDb(this)
-        lifecycle.coroutineScope.launch {
-            StorageNotes.loadNotesFromDb().collect() {
-                StorageNotes.allNotes.clear()
-                StorageNotes.allNotes.addAll(it)
-                adapter.addData(it)
-            }
-        }
+        putDbDataToAdapter()
     }
 
     private fun initViews() {
@@ -46,6 +40,19 @@ class MainActivity : AppCompatActivity() {
         bindingMain.noteButton.let {
             it.setOnClickListener {
                 startActivity(CreateNoteActivity.newIntent(this@MainActivity))
+            }
+        }
+    }
+
+    /**
+     * Функция для обновления локального списка заметок данными из БД и передачи их в адаптер
+     */
+    private fun putDbDataToAdapter() {
+        lifecycle.coroutineScope.launch {
+            StorageNotes.loadNotesFromDb().collect() {
+                StorageNotes.allNotes.clear()
+                StorageNotes.allNotes.addAll(it)
+                adapter.updateAdapter(it)
             }
         }
     }

@@ -6,9 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 /**
- *
- *
- * @author Имя Фамилия on 23.06.2023
+ * Класс для создания базы данных
  */
 @Database(entities = [Note::class], version = 1)
 abstract class MainDb : RoomDatabase() {

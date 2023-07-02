@@ -1,20 +1,7 @@
 <resources>
     <string name="app_name">NotesApp</string>
     <string name="new_note">Новая заметка</string>
+    <string name="ed_title_hint">Заголовок</string>
+    <string name="ed_desc_hint">Описание</string>
 
-    <string-array name="cat_names">
-        <item>Рыжик</item>
-        <item>Барсик</item>
-        <item>Мурзик</item>
-        <item>Мурка</item>
-        <item>Васька</item>
-        <item>Томасина</item>
-        <item>Кристина</item>
-        <item>Пушок</item>
-        <item>Дымка</item>
-        <item>Кузя</item>
-        <item>Китти</item>
-        <item>Масяня</item>
-        <item>Симба</item>
-    </string-array>
 </resources>

@@ -47,7 +47,7 @@ class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<
     /**
      * Функция для обновления и инициализации списка заметок
      */
-    fun addData(data: List<Note>) {
+    fun updateAdapter(data: List<Note>) {
         noteList.clear()
         noteList.addAll(data)
         notifyDataSetChanged()

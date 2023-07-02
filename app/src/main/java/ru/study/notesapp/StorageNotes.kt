@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
- * Синглтон для хранения списка заметок
+ * Синглтон для хранения списка заметок из базы данных и обращения к ней через методы интерфейса Dao
  */
 object StorageNotes {
     private lateinit var db: MainDb
@@ -20,7 +20,19 @@ object StorageNotes {
 
     fun addNote(note: Note) {
         GlobalScope.launch {
-            db.getDao().addNote(note)
+            if (note.title != "" || note.description != "") {
+                db.getDao().addNote(note)
+            }
+        }
+    }
+
+    fun updateNote(note: Note) {
+        GlobalScope.launch {
+            if (note.title != "" || note.description != "") {
+                db.getDao().updateNote(note)
+            } else {
+                db.getDao().deleteNote(note)
+            }
         }
     }
 
