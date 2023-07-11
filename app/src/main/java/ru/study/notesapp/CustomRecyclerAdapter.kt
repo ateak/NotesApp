@@ -52,4 +52,14 @@ class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<
         noteList.addAll(data)
         notifyDataSetChanged()
     }
+
+    /**
+     * Функция для удаления заметки из базы данных и из адаптера
+     */
+    fun removeItem(position: Int) {
+        StorageNotes.removeNote(noteList[position])
+        noteList.removeAt(position)
+        notifyItemRangeChanged(0, noteList.size)
+        notifyItemRemoved(position)
+    }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.coroutineScope
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.study.notesapp.databinding.ActivityMainBinding
 
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         adapter = CustomRecyclerAdapter { note ->
             startActivity(Intent(this, DetailsNoteActivity::class.java).putExtra("item_hash", note.hashCode()))
         }
+        val swapHelper = swapHelper()
+        swapHelper.attachToRecyclerView(bindingMain.recyclerView)
         bindingMain.recyclerView.adapter = adapter
     }
 
@@ -65,5 +69,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun getNoteList(): List<Note> {
         return StorageNotes.allNotes
+    }
+
+    /**
+     * Функция для удаления заметки по свайпу вправо
+     */
+    private fun swapHelper(): ItemTouchHelper {
+        return ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeItem(viewHolder.bindingAdapterPosition)
+
+            }
+        })
     }
 }
