@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import ru.study.notesapp.databinding.FragmentMainBinding
 
 class MainFragment : Fragment(), Contract.View {
@@ -14,13 +16,14 @@ class MainFragment : Fragment(), Contract.View {
     private lateinit var bindingMain: FragmentMainBinding
     private lateinit var adapter: CustomRecyclerAdapter
     private val dataModel: DataModel by activityViewModels()
-    private val presenter = Presenter(this, Model())
+    private var presenter: MainPresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        presenter  = MainPresenter(this, Model())
         bindingMain = FragmentMainBinding.inflate(inflater)
         Log.v("MainFragment", "Main fragment on create")
         return bindingMain.root
@@ -28,8 +31,8 @@ class MainFragment : Fragment(), Contract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        context?.let { presenter.showNotes(it) }
+        initViews()
+        context?.let { presenter?.showNotes(it) }
     }
 
     override fun initViews() {
@@ -42,6 +45,8 @@ class MainFragment : Fragment(), Contract.View {
             openFragment(DetailsNoteFragment.newInstance(), R.id.fragmentContainerView2)
             dataModel.hash.value = note.hashCode()
         }
+        val swapHelper = deleteItemBySwipe()
+        swapHelper.attachToRecyclerView(bindingMain.recyclerView)
         bindingMain.recyclerView.adapter = adapter
     }
 
@@ -54,7 +59,11 @@ class MainFragment : Fragment(), Contract.View {
     }
 
     override fun updateViews() {
-        adapter.updateAdapter(presenter.getNotes())
+        presenter?.let { adapter.updateAdapter(it.getNotes()) }
+    }
+
+    override fun deleteNote(viewHolder: RecyclerView.ViewHolder) {
+        adapter.removeItem(viewHolder.bindingAdapterPosition)
     }
 
     override fun openFragment(fragment: Fragment, idHolder: Int) {
@@ -65,8 +74,32 @@ class MainFragment : Fragment(), Contract.View {
             .commit()
     }
 
+    /**
+     * Функция для удаления заметки по свайпу вправо
+     */
+    private fun deleteItemBySwipe(): ItemTouchHelper {
+        return ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                presenter?.deleteItem(viewHolder)
+            }
+        })
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter = null
     }
 }
