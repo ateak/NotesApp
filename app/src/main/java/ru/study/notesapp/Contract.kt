@@ -1,6 +1,7 @@
 package ru.study.notesapp
 
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Интерфейс для внедрения паттерна MVP
@@ -13,6 +14,8 @@ interface Contract {
 
         fun updateViews()
 
+        fun deleteNote(viewHolder: RecyclerView.ViewHolder)
+
         fun openFragment(fragment: Fragment, idHolder: Int)
     }
 
@@ -24,8 +27,5 @@ interface Contract {
 
         fun onButtonClick()
 
-        fun onViewCreated()
-
-        fun onDestroy()
     }
 }
