@@ -21,6 +21,9 @@ interface Dao {
     @Delete
     fun deleteNote(note: Note)
 
+    @Query("DELETE FROM notes WHERE id = :id")
+    fun deleteNote(id: Int?)
+
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): Flow<List<Note>>
+    fun getAllNotes(): MutableList<Note>
 }

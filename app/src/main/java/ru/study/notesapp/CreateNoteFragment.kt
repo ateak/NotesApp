@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 
 class CreateNoteFragment : Fragment() {
-   private lateinit var binding: FragmentCreateNoteBinding
+    private lateinit var binding: FragmentCreateNoteBinding
+   // private val storageNotes = StorageNotes(requireContext())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,10 +25,11 @@ class CreateNoteFragment : Fragment() {
         initViews()
     }
 
+    //TODO создать объект storageNotes
     private fun initViews() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
-                StorageNotes.addNote(
+                StorageNotes(requireContext()).addNote(
                     Note(
                         null,
                         binding.title.text.toString(),

@@ -1,42 +1,21 @@
 package ru.study.notesapp
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 /**
- *
- *
- * @author Екатерина Тимошкина on 16.07.2023
+ * MainPresenter для MainFragment
+ * @author Екатерина Тимошкина on 19.07.2023
  */
-class MainPresenter(var mainView: Contract.View?, var model: Contract.Model) : Contract.Presenter {
+class MainPresenter(var context: Context, var mainView: Contract.View?) : Contract.Presenter {
 
-    fun showNotes(context: Context) {
-        StorageNotes.setDb(context)
-        putDbDataToAdapter()
+    val storageNotes = StorageNotes(context)
+    init {
+        mainView?.showNotes(getNotes())
     }
 
-    /**
-     * Функция для обновления локального списка заметок данными из БД и передачи их в адаптер
-     */
-    private fun putDbDataToAdapter() {
-        GlobalScope.launch(Dispatchers.Main) {
-            StorageNotes.loadNotesFromDb().collect() {
-                StorageNotes.allNotes.clear()
-                StorageNotes.allNotes.addAll(it)
-                mainView?.updateViews()
-            }
-        }
-    }
+    private fun getNotes() = storageNotes.allNotes
 
-    fun deleteItem(viewHolder: RecyclerView.ViewHolder) {
-        mainView?.deleteNote(viewHolder)
-    }
-    fun getNotes() = StorageNotes.allNotes
-
-
-    override fun onButtonClick() {
+    override fun deleteNote(id: Int?) {
+        storageNotes.removeNote(id)
     }
 }
