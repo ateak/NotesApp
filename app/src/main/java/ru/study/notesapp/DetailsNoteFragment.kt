@@ -6,12 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ru.study.notesapp.databinding.FragmentCreateNoteBinding
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 
 class DetailsNoteFragment : Fragment() {
     private lateinit var bindingDetailsNote: FragmentDetailsNoteBinding
     private var note: Note? = null
+    private val dataModel: DataModel by activityViewModels()
+    private var hash: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +39,8 @@ class DetailsNoteFragment : Fragment() {
     }
 
     private fun initViews() {
-        //val hash = intent.getIntExtra("item_hash", 0)
-        //note = StorageNotes.allNotes.find { it.hashCode() == hash }
+        dataModel.hash.observe(activity as LifecycleOwner) { hash = it }
+        note = StorageNotes.allNotes.find { it.hashCode() == hash }
         bindingDetailsNote.title.setText(note?.title)
         bindingDetailsNote.description.setText(note?.description)
     }

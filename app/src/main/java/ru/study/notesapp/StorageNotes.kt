@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 /**
  * Синглтон для хранения списка заметок из базы данных и обращения к ней через методы интерфейса Dao
  */
-object StorageNotes {
+object StorageNotes : Contract.Model {
     private lateinit var db: MainDb
     var allNotes: MutableList<Note> = mutableListOf()
 
@@ -41,5 +41,6 @@ object StorageNotes {
             db.getDao().deleteNote(note)
         }
     }
+
 }
 
