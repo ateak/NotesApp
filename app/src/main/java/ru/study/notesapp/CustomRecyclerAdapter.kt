@@ -40,26 +40,22 @@ class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<
         }
     }
 
-    override fun getItemCount(): Int {
-        return noteList.size
-    }
+    override fun getItemCount() = noteList.size
+
+    fun getItemByPosition(position: Int) = noteList[position]
 
     /**
      * Функция для обновления и инициализации списка заметок
      */
-    fun updateAdapter(data: List<Note>) {
+    fun updateAdapter(data: MutableList<Note>) {
         noteList.clear()
         noteList.addAll(data)
         notifyDataSetChanged()
     }
 
-    /**
-     * Функция для удаления заметки из базы данных и из адаптера
-     */
     fun removeItem(position: Int) {
-        StorageNotes.removeNote(noteList[position])
         noteList.removeAt(position)
-        notifyItemRangeChanged(0, noteList.size)
+        notifyItemRangeChanged(0, itemCount)
         notifyItemRemoved(position)
     }
 }

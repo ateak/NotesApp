@@ -13,6 +13,7 @@ import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 class DetailsNoteFragment : Fragment() {
     private lateinit var bindingDetailsNote: FragmentDetailsNoteBinding
     private var note: Note? = null
+    //private val storageNotes = context?.let { StorageNotes(it) }
     private val dataModel: DataModel by activityViewModels()
     private var hash: Int = 0
 
@@ -30,17 +31,19 @@ class DetailsNoteFragment : Fragment() {
         initViews()
     }
 
+    //TODO создать объект storageNotes
     override fun onPause() {
         super.onPause()
         Log.v("DetailsNoteFragment", "DetailsNote Fragment onPause")
         note?.title = bindingDetailsNote.title.text.toString()
         note?.description = bindingDetailsNote.description.text.toString()
-        note?.let { StorageNotes.updateNote(it) }
+        note?.let { StorageNotes(requireContext())?.updateNote(it) }
     }
 
+    //TODO создать объект storageNotes
     private fun initViews() {
         dataModel.hash.observe(activity as LifecycleOwner) { hash = it }
-        note = StorageNotes.allNotes.find { it.hashCode() == hash }
+        note = StorageNotes(requireContext())?.allNotes?.find { it.hashCode() == hash }
         bindingDetailsNote.title.setText(note?.title)
         bindingDetailsNote.description.setText(note?.description)
     }

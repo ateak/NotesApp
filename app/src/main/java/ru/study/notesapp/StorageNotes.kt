@@ -2,21 +2,15 @@ package ru.study.notesapp
 
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
- * Синглтон для хранения списка заметок из базы данных и обращения к ней через методы интерфейса Dao
+ * Класс для работы с базой данных
  */
-object StorageNotes : Contract.Model {
-    private lateinit var db: MainDb
-    var allNotes: MutableList<Note> = mutableListOf()
-
-    fun setDb(context: Context) {
-        db = MainDb.getDb(context)
-    }
-
-    fun loadNotesFromDb(): Flow<List<Note>> = db.getDao().getAllNotes()
+class StorageNotes(val context: Context) {
+    private val db: MainDb by lazy { MainDb.getDb(context)  }
+    val allNotes: MutableList<Note>
+        get() = db.getDao().getAllNotes()
 
     fun addNote(note: Note) {
         GlobalScope.launch {
@@ -36,11 +30,10 @@ object StorageNotes : Contract.Model {
         }
     }
 
-    fun removeNote(note: Note) {
+    fun removeNote(id: Int?) {
         GlobalScope.launch {
-            db.getDao().deleteNote(note)
+            db.getDao().deleteNote(id)
         }
     }
-
 }
 
