@@ -10,12 +10,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 
-class DetailsNoteFragment : Fragment() {
+class DetailsNoteFragment : Fragment(), Contract.DetailsNoteView {
     private lateinit var bindingDetailsNote: FragmentDetailsNoteBinding
+    private var presenter: DetailsNotePresenter? = null
+
     private var note: Note? = null
     //private val storageNotes = context?.let { StorageNotes(it) }
     private val dataModel: DataModel by activityViewModels()
-    private var hash: Int = 0
+    private var noteId: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +31,7 @@ class DetailsNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        presenter = DetailsNotePresenter(requireContext(),this)
     }
 
     //TODO создать объект storageNotes
@@ -42,10 +45,15 @@ class DetailsNoteFragment : Fragment() {
 
     //TODO создать объект storageNotes
     private fun initViews() {
-        dataModel.hash.observe(activity as LifecycleOwner) { hash = it }
-        note = StorageNotes(requireContext())?.allNotes?.find { it.hashCode() == hash }
+        dataModel.noteId.observe(activity as LifecycleOwner) { noteId = it }
+        note = StorageNotes(requireContext())?.allNotes?.find { it.id == noteId }
         bindingDetailsNote.title.setText(note?.title)
         bindingDetailsNote.description.setText(note?.description)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter = null
     }
 
     companion object {

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.study.notesapp.databinding.FragmentMainBinding
 
-class MainFragment : Fragment(), Contract.View {
+class MainFragment : Fragment(), Contract.MainView {
 
     private lateinit var bindingMain: FragmentMainBinding
     private lateinit var adapter: CustomRecyclerAdapter
@@ -42,7 +42,7 @@ class MainFragment : Fragment(), Contract.View {
     private fun initRecyclerView() {
         adapter = CustomRecyclerAdapter { note ->
             openFragment(DetailsNoteFragment.newInstance(), R.id.fragmentContainerView2)
-            dataModel.hash.value = note.hashCode()
+            dataModel.noteId.value = note.id
         }
         val swapHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(

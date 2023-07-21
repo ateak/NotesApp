@@ -18,7 +18,7 @@ abstract class MainDb : RoomDatabase() {
             return Room.databaseBuilder(
                 context,
                 MainDb::class.java,
-                "`myNotes.db"
+                "myNotes.db"
             ).allowMainThreadQueries().build()
         }
     }

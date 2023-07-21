@@ -35,5 +35,14 @@ class StorageNotes(val context: Context) {
             db.getDao().deleteNote(id)
         }
     }
+
+    //TODO так не работает, попробовать с Flow
+    fun findNote(id: Int?) : Note? {
+        var note: Note? = null
+        GlobalScope.launch {
+            note = db.getDao().findByPrimaryKey(id)
+        }
+        return note
+    }
 }
 

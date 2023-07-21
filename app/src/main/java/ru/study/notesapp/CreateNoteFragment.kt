@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 
-class CreateNoteFragment : Fragment() {
+class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
     private lateinit var binding: FragmentCreateNoteBinding
-   // private val storageNotes = StorageNotes(requireContext())
+    private var presenter: CreateNotePresenter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,18 +23,17 @@ class CreateNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        
+        presenter = CreateNotePresenter(requireContext(), this)
     }
 
-    //TODO создать объект storageNotes
     private fun initViews() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
-                StorageNotes(requireContext()).addNote(
-                    Note(
-                        null,
-                        binding.title.text.toString(),
-                        binding.description.text.toString()
-                    )
+                presenter?.saveNote(
+                    null,
+                    binding.title.text.toString(),
+                    binding.description.text.toString()
                 )
                 parentFragmentManager
                     .beginTransaction()
@@ -43,7 +42,12 @@ class CreateNoteFragment : Fragment() {
             }
         }
     }
-
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter = null
+    }
+    
     companion object {
         @JvmStatic
         fun newInstance() = CreateNoteFragment()
