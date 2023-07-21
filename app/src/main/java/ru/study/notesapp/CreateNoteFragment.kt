@@ -23,6 +23,7 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        
         presenter = CreateNotePresenter(requireContext(), this)
     }
 
@@ -41,12 +42,12 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
             }
         }
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         presenter = null
     }
-
+    
     companion object {
         @JvmStatic
         fun newInstance() = CreateNoteFragment()

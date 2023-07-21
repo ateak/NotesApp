@@ -5,6 +5,7 @@ package ru.study.notesapp
  * @author Екатерина Тимошкина on 16.07.2023
  */
 interface Contract {
+  
     interface MainView {
         fun showNotes(noteList: MutableList<Note>)
     }

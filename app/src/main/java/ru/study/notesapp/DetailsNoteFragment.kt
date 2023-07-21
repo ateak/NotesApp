@@ -32,7 +32,6 @@ class DetailsNoteFragment : Fragment(), Contract.DetailsNoteView {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         presenter = DetailsNotePresenter(requireContext(),this)
-
     }
 
     //TODO создать объект storageNotes

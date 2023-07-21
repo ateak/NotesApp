@@ -10,6 +10,7 @@ class MainPresenter(var context: Context, var mainView: Contract.MainView?) :
     Contract.MainPresenter {
 
     private val storageNotes = StorageNotes(context)
+    
     init {
         mainView?.showNotes(getNotes())
     }
