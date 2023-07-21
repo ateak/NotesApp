@@ -26,4 +26,7 @@ interface Dao {
 
     @Query("SELECT * FROM notes")
     fun getAllNotes(): MutableList<Note>
+
+    @Query("SELECT * FROM notes WHERE id = :id")
+    fun findByPrimaryKey(id: Int?): Note
 }

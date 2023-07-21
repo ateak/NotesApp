@@ -6,9 +6,10 @@ import android.content.Context
  * MainPresenter для MainFragment
  * @author Екатерина Тимошкина on 19.07.2023
  */
-class MainPresenter(var context: Context, var mainView: Contract.View?) : Contract.Presenter {
+class MainPresenter(var context: Context, var mainView: Contract.MainView?) :
+    Contract.MainPresenter {
 
-    val storageNotes = StorageNotes(context)
+    private val storageNotes = StorageNotes(context)
     init {
         mainView?.showNotes(getNotes())
     }

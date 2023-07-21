@@ -5,11 +5,18 @@ package ru.study.notesapp
  * @author Екатерина Тимошкина on 16.07.2023
  */
 interface Contract {
-    interface View {
+    interface MainView {
         fun showNotes(noteList: MutableList<Note>)
     }
-
-    interface Presenter {
+    interface MainPresenter {
         fun deleteNote(id: Int?)
     }
+
+    interface CreateNoteView
+    interface CreateNotePresenter {
+        fun saveNote(id: Int?, title: String, description: String)
+    }
+    interface DetailsNoteView
+
+    interface DetailsNotePresenter
 }

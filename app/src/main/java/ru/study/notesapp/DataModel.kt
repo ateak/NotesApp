@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
  * @author Екатерина Тимошкина on 16.07.2023
  */
 open class DataModel : ViewModel() {
-    val hash: MutableLiveData<Int> by lazy {
+    val noteId: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()
     }
 }
