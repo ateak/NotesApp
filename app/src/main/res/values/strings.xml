@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">NotesApp</string>
-    <string name="new_note">Новая заметка</string>
-    <string name="ed_title_hint">Заголовок</string>
-    <string name="ed_desc_hint">Описание</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">Save</string>
+    <string name="title">Title</string>
+    <string name="desc">Description</string>
 
 </resources>

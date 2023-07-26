@@ -2,21 +2,19 @@ package ru.study.notesapp
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 
+/**
+ * Фрагмент для размещения подробного описания заметки
+ */
 class DetailsNoteFragment : Fragment(), Contract.DetailsNoteView {
     private lateinit var bindingDetailsNote: FragmentDetailsNoteBinding
     private var presenter: DetailsNotePresenter? = null
-
-    private var note: Note? = null
-    //private val storageNotes = context?.let { StorageNotes(it) }
-    private val dataModel: DataModel by activityViewModels()
     private var noteId: Int = 0
 
     override fun onCreateView(
@@ -30,35 +28,33 @@ class DetailsNoteFragment : Fragment(), Contract.DetailsNoteView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter = DetailsNotePresenter(requireContext(), this)
         initViews()
-        presenter = DetailsNotePresenter(requireContext(),this)
-
     }
 
-    //TODO создать объект storageNotes
     override fun onPause() {
         super.onPause()
         Log.v("DetailsNoteFragment", "DetailsNote Fragment onPause")
-        note?.title = bindingDetailsNote.title.text.toString()
-        note?.description = bindingDetailsNote.description.text.toString()
-        note?.let { StorageNotes(requireContext())?.updateNote(it) }
+        presenter?.updateNote(
+            noteId,
+            bindingDetailsNote.title.text.toString(),
+            bindingDetailsNote.description.text.toString()
+        )
     }
 
-    //TODO создать объект storageNotes
     private fun initViews() {
-        dataModel.noteId.observe(activity as LifecycleOwner) { noteId = it }
-        note = StorageNotes(requireContext())?.allNotes?.find { it.id == noteId }
-        bindingDetailsNote.title.setText(note?.title)
-        bindingDetailsNote.description.setText(note?.description)
+        val args: DetailsNoteFragmentArgs by navArgs()
+        noteId = args.NoteId
+        presenter?.getNote(noteId)
+    }
+
+    override fun showNote(note: Note) {
+        bindingDetailsNote.title.setText(note.title)
+        bindingDetailsNote.description.setText(note.description)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = DetailsNoteFragment()
     }
 }

@@ -2,27 +2,21 @@ package ru.study.notesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import ru.study.notesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    //private val dataModel: DataModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        openFragment(MainFragment.newInstance(), R.id.fragmentContainerView2)
+        setupActionBarWithNavController(findNavController(R.id.fragmentContainerView))
     }
 
-    private fun openFragment(fragment: Fragment, idHolder: Int) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(idHolder, fragment)
-            .commit()
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.fragmentContainerView).navigateUp() || super.onSupportNavigateUp()
     }
 }

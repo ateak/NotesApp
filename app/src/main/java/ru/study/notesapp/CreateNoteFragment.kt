@@ -5,8 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 
+/**
+ * Фрагмент, на котором размещены поля для создания заметки
+ */
 class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
     private lateinit var binding: FragmentCreateNoteBinding
     private var presenter: CreateNotePresenter? = null
@@ -22,8 +26,8 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
         presenter = CreateNotePresenter(requireContext(), this)
+        initViews()
     }
 
     private fun initViews() {
@@ -34,10 +38,7 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
                     binding.title.text.toString(),
                     binding.description.text.toString()
                 )
-                parentFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainerView2, MainFragment.newInstance())
-                    .commit()
+                findNavController().popBackStack()
             }
         }
     }
@@ -45,10 +46,5 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = CreateNoteFragment()
     }
 }
