@@ -42,7 +42,7 @@ class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
             }
         }
     }
-
+    
     override fun onDestroyView() {
         super.onDestroyView()
         presenter = null
