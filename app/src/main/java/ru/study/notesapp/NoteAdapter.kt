@@ -1,6 +1,5 @@
 package ru.study.notesapp
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,20 +9,22 @@ import ru.study.notesapp.databinding.RecyclerviewItemBinding
 /**
  * Адаптер для отрисовки элемента заметки в списке
  */
-class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<CustomRecyclerAdapter.NoteHolder>() {
+class NoteAdapter(val listener: Listener): RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
     private val noteList = mutableListOf<Note>()
 
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bindingAdapter = RecyclerviewItemBinding.bind(itemView)
-        fun bind(note: Note) = with(bindingAdapter) {
+        fun bind(note: Note, listener: Listener) = with(bindingAdapter) {
             textViewLarge.text = note.title
             textViewSmall.text = note.description
+            itemView.setOnClickListener {
+                listener.onNoteClick(note)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
-        Log.v("CustomRecyclerAdapter", "onCreate view holder")
 
         return NoteHolder(
             LayoutInflater.from(parent.context)
@@ -32,12 +33,8 @@ class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
-        Log.v("CustomRecyclerAdapter", "on bind view holder заметка: ${noteList[position].title}")
 
-        holder.bind(noteList[position])
-        holder.itemView.setOnClickListener {
-            onClick(noteList[position])
-        }
+        holder.bind(noteList[position], listener)
     }
 
     override fun getItemCount() = noteList.size
@@ -53,6 +50,9 @@ class CustomRecyclerAdapter(val onClick: (Note) -> Unit) : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 
+    /**
+     * Функция для удаления заметки из списка адаптера
+     */
     fun removeItem(position: Int) {
         noteList.removeAt(position)
         notifyItemRangeChanged(0, itemCount)

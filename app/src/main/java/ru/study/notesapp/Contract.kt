@@ -9,6 +9,7 @@ interface Contract {
     interface MainView {
         fun showNotes(noteList: MutableList<Note>)
     }
+
     interface MainPresenter {
         fun deleteNote(id: Int?)
     }
@@ -17,7 +18,13 @@ interface Contract {
     interface CreateNotePresenter {
         fun saveNote(id: Int?, title: String, description: String)
     }
-    interface DetailsNoteView
 
-    interface DetailsNotePresenter
+    interface DetailsNoteView {
+        fun showNote(note: Note)
+    }
+
+    interface DetailsNotePresenter {
+        fun getNote(noteId: Int)
+        fun updateNote(id: Int?, title: String, description: String)
+    }
 }

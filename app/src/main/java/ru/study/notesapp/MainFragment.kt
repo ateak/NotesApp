@@ -1,21 +1,22 @@
 package ru.study.notesapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.study.notesapp.databinding.FragmentMainBinding
 
-class MainFragment : Fragment(), Contract.MainView {
+/**
+ * Фрагмент для размещения списка заметок
+ */
+class MainFragment : Fragment(), Contract.MainView, Listener {
 
     private lateinit var bindingMain: FragmentMainBinding
-    private lateinit var adapter: CustomRecyclerAdapter
-    private val dataModel: DataModel by activityViewModels()
+    private lateinit var adapter: NoteAdapter
     private var presenter: MainPresenter? = null
 
     override fun onCreateView(
@@ -24,14 +25,13 @@ class MainFragment : Fragment(), Contract.MainView {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         bindingMain = FragmentMainBinding.inflate(inflater)
-        Log.v("MainFragment", "Main fragment on create")
         return bindingMain.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        presenter = MainPresenter(requireContext(),this)
+        presenter = MainPresenter(requireContext(), this)
     }
 
     private fun initViews() {
@@ -40,10 +40,8 @@ class MainFragment : Fragment(), Contract.MainView {
     }
 
     private fun initRecyclerView() {
-        adapter = CustomRecyclerAdapter { note ->
-            openFragment(DetailsNoteFragment.newInstance(), R.id.fragmentContainerView2)
-            dataModel.noteId.value = note.id
-        }
+        adapter = NoteAdapter(this)
+
         val swapHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -63,10 +61,8 @@ class MainFragment : Fragment(), Contract.MainView {
     }
 
     private fun initButtons() {
-        bindingMain.noteButton.let {
-            it.setOnClickListener {
-                openFragment(CreateNoteFragment.newInstance(), R.id.fragmentContainerView2)
-            }
+        bindingMain.noteButton.setOnClickListener {
+            findNavController().navigate(R.id.createNoteFragment)
         }
     }
 
@@ -74,21 +70,13 @@ class MainFragment : Fragment(), Contract.MainView {
         adapter.updateAdapter(noteList)
     }
 
-    private fun openFragment(fragment: Fragment, idHolder: Int) {
-        parentFragmentManager
-            .beginTransaction()
-            .addToBackStack("MainFragment")
-            .replace(idHolder, fragment)
-            .commit()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         presenter = null
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = MainFragment()
+    override fun onNoteClick(note: Note) {
+        val action = MainFragmentDirections.actionMainFragmentToDetailsNoteFragment(note.id!!)
+        findNavController().navigate(action)
     }
 }
