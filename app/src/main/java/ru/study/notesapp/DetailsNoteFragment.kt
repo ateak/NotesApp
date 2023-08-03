@@ -32,21 +32,25 @@ class DetailsNoteFragment : Fragment() {
         initViews()
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.v("DetailsNoteFragment", "DetailsNote Fragment onPause")
+    override fun onStop() {
+        super.onStop()
         viewModel.updateNote(
             noteId,
             bindingDetailsNote.title.text.toString(),
             bindingDetailsNote.description.text.toString()
         )
+        viewModel.updateNoteList()
+        Log.v("Katya", "Details onStop ${bindingDetailsNote.title.text}")
     }
 
+    //TODO проверить на null noteId
     private fun initViews() {
-        viewModel.note.observe(this) {
+        viewModel.note.observe(viewLifecycleOwner) {
             noteId = it.id!!
             bindingDetailsNote.title.setText(it.title)
             bindingDetailsNote.description.setText(it.description)
+           viewModel.updateNoteList()
+            Log.v("Katya", "DetailsNote $it")
         }
     }
 }

@@ -39,6 +39,7 @@ class CreateNoteFragment : Fragment() {
                     binding.description.text.toString()
                 )
                 findNavController().popBackStack()
+                viewModel.updateNoteList()
             }
         }
     }

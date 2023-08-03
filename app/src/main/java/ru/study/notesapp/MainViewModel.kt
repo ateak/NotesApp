@@ -10,32 +10,33 @@ import androidx.lifecycle.ViewModel
  */
 class MainViewModel(private val storageNotes: StorageNotes) : ViewModel() {
 
-    val noteList: MutableLiveData<List<Note>> by lazy {
-        MutableLiveData<List<Note>>()
-    }
+    val noteList = MutableLiveData(getNotes())
 
     val note: MutableLiveData<Note> by lazy {
         MutableLiveData<Note>()
-    }
-
-    init {
-        noteList.value = getNotes()
     }
 
     private fun getNotes() = storageNotes.allNotes
 
     fun saveNote(id: Int?, title: String, description: String) {
         storageNotes.addNote(Note(id, title, description))
-        noteList.value = getNotes()
+       // noteList.value = getNotes()
     }
 
     fun deleteNote(id: Int?) {
         storageNotes.removeNote(id)
-        noteList.value = getNotes()
     }
 
     fun updateNote(id: Int?, title: String, description: String) {
         storageNotes.updateNote(Note(id, title, description))
-        noteList.value = getNotes()
+        //noteList.value = getNotes()
+    }
+
+    fun editNote(noteEdit: Note) {
+        note.value = storageNotes.allNotes.find { it.id == noteEdit.id }
+    }
+
+    fun updateNoteList() {
+        noteList.postValue(getNotes())
     }
 }

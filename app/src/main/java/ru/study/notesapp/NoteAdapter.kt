@@ -44,7 +44,7 @@ class NoteAdapter(val listener: Listener): RecyclerView.Adapter<NoteAdapter.Note
     /**
      * Функция для обновления и инициализации списка заметок
      */
-    fun updateAdapter(data: MutableList<Note>) {
+    fun updateAdapter(data: List<Note>) {
         noteList.clear()
         noteList.addAll(data)
         notifyDataSetChanged()

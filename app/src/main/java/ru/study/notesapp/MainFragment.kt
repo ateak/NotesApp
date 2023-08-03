@@ -1,12 +1,12 @@
 package ru.study.notesapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -34,9 +34,10 @@ class MainFragment : Fragment(), Listener {
         super.onViewCreated(view, savedInstanceState)
         initViews()
 
-        viewModel.noteList.observe(this, Observer {
-            adapter.updateAdapter(it as MutableList<Note>)
-        })
+        viewModel.noteList.observe(viewLifecycleOwner) {
+            adapter.updateAdapter(it)
+            Log.v("Katya", "viewModel.noteList: ${viewModel.noteList.value}")
+        }
     }
 
     private fun initViews() {
@@ -58,6 +59,8 @@ class MainFragment : Fragment(), Listener {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.deleteNote(adapter.getItemByPosition(viewHolder.position).id)
+                Log.v("Katya", "viewModel.deleteNote: ${viewModel.noteList.value}")
+
                 adapter.removeItem(viewHolder.position)
             }
         })
@@ -72,7 +75,8 @@ class MainFragment : Fragment(), Listener {
     }
 
     override fun onNoteClick(note: Note) {
-        viewModel.note.value = note
+        viewModel.editNote(note)
+        Log.v("Katya", "onNoteClick $note")
         findNavController().navigate(R.id.detailsNoteFragment)
     }
 }
