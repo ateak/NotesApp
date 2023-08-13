@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 
@@ -14,7 +14,7 @@ import ru.study.notesapp.databinding.FragmentCreateNoteBinding
  */
 class CreateNoteFragment : Fragment() {
     private lateinit var binding: FragmentCreateNoteBinding
-    private val viewModel: MainViewModel by activityViewModels()
+    private lateinit var createNoteViewModel: CreateNoteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +22,8 @@ class CreateNoteFragment : Fragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentCreateNoteBinding.inflate(inflater)
+        createNoteViewModel =
+            ViewModelProvider(this, ViewModelFactory(requireContext())).get(CreateNoteViewModel::class.java)
         return binding.root
     }
 
@@ -33,13 +35,12 @@ class CreateNoteFragment : Fragment() {
     private fun initViews() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
-                viewModel.saveNote(
-                    null,
+                createNoteViewModel.saveNote(
+                    0,
                     binding.title.text.toString(),
                     binding.description.text.toString()
                 )
-                findNavController().popBackStack()
-                viewModel.updateNoteList()
+                findNavController().navigate(CreateNoteFragmentDirections.actionCreateNoteFragmentToMainFragment())
             }
         }
     }

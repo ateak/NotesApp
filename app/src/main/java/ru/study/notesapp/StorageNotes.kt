@@ -2,6 +2,7 @@ package ru.study.notesapp
 
 import android.content.Context
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
@@ -9,8 +10,12 @@ import kotlinx.coroutines.launch
  */
 class StorageNotes(val context: Context) {
     private val db: MainDb by lazy { MainDb.getDb(context) }
-    val allNotes: MutableList<Note>
-        get() = db.getDao().getAllNotes()
+    val allNotes: Flow<List<Note>>
+        get() {
+            return db.getDao().getAllNotes()
+        }
+
+    fun getNote(id: Int) = db.getDao().getNoteById(id)
 
     fun addNote(note: Note) {
         GlobalScope.launch {
@@ -30,9 +35,9 @@ class StorageNotes(val context: Context) {
         }
     }
 
-    fun removeNote(id: Int?) {
+    fun removeNote(id: Int) {
         GlobalScope.launch {
-            db.getDao().deleteNote(id)
+            db.getDao().deleteNoteById(id)
         }
     }
 }

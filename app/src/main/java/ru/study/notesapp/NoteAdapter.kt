@@ -3,23 +3,26 @@ package ru.study.notesapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.study.notesapp.databinding.RecyclerviewItemBinding
 
 /**
  * Адаптер для отрисовки элемента заметки в списке
  */
-class NoteAdapter(val listener: Listener): RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
+class NoteAdapter(val listener: Listener) : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
-    private val noteList = mutableListOf<Note>()
+    private var oldNoteList = emptyList<Note>()
 
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bindingAdapter = RecyclerviewItemBinding.bind(itemView)
-        fun bind(note: Note, listener: Listener) = with(bindingAdapter) {
-            textViewLarge.text = note.title
-            textViewSmall.text = note.description
+        fun bind(note: Note?, listener: Listener) = with(bindingAdapter) {
+            textViewLarge.text = note?.title
+            textViewSmall.text = note?.description
             itemView.setOnClickListener {
-                listener.onNoteClick(note)
+                if (note != null) {
+                    listener.onNoteClick(note)
+                }
             }
         }
     }
@@ -33,29 +36,20 @@ class NoteAdapter(val listener: Listener): RecyclerView.Adapter<NoteAdapter.Note
     }
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
-
-        holder.bind(noteList[position], listener)
+        holder.bind(oldNoteList[position], listener)
     }
 
-    override fun getItemCount() = noteList.size
+    override fun getItemCount() = oldNoteList.size
 
-    fun getItemByPosition(position: Int) = noteList[position]
-
-    /**
-     * Функция для обновления и инициализации списка заметок
-     */
-    fun updateAdapter(data: List<Note>) {
-        noteList.clear()
-        noteList.addAll(data)
-        notifyDataSetChanged()
-    }
+    fun getItemByPosition(position: Int) = oldNoteList[position]
 
     /**
-     * Функция для удаления заметки из списка адаптера
+     * Функция для обновления списка заметок на MainFragment
      */
-    fun removeItem(position: Int) {
-        noteList.removeAt(position)
-        notifyItemRangeChanged(0, itemCount)
-        notifyItemRemoved(position)
+    fun updateData(newNoteList: List<Note>) {
+        val diffUtil = NoteDiffUtil(oldNoteList, newNoteList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        oldNoteList = newNoteList
+        diffResult.dispatchUpdatesTo(this)
     }
 }
