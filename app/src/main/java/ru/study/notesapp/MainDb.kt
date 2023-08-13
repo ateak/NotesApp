@@ -13,13 +13,12 @@ abstract class MainDb : RoomDatabase() {
     abstract fun getDao(): Dao
 
     companion object {
-        //TODO найти способ не использовать allowMainThreadQueries()
         fun getDb(context: Context): MainDb {
             return Room.databaseBuilder(
                 context,
                 MainDb::class.java,
                 "myNotes.db"
-            ).allowMainThreadQueries().build()
+            ).build()
         }
     }
 }

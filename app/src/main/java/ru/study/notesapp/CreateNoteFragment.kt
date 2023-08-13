@@ -5,46 +5,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 
 /**
  * Фрагмент, на котором размещены поля для создания заметки
  */
-class CreateNoteFragment : Fragment(), Contract.CreateNoteView {
+class CreateNoteFragment : Fragment() {
     private lateinit var binding: FragmentCreateNoteBinding
-    private var presenter: CreateNotePresenter? = null
+    private lateinit var createNoteViewModel: CreateNoteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentCreateNoteBinding.inflate(inflater)
+        createNoteViewModel =
+            ViewModelProvider(this, ViewModelFactory(requireContext())).get(CreateNoteViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter = CreateNotePresenter(requireContext(), this)
         initViews()
     }
 
     private fun initViews() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
-                presenter?.saveNote(
-                    null,
+                createNoteViewModel.saveNote(
+                    0,
                     binding.title.text.toString(),
                     binding.description.text.toString()
                 )
-                findNavController().popBackStack()
+                findNavController().navigate(CreateNoteFragmentDirections.actionCreateNoteFragmentToMainFragment())
             }
         }
-    }
-    
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter = null
     }
 }

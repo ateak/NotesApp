@@ -3,6 +3,7 @@ package ru.study.notesapp
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 @Dao
 interface Dao {
-    @Insert
+    @Insert(onConflict = REPLACE)
     fun addNote(note: Note)
 
     @Update
@@ -21,9 +22,12 @@ interface Dao {
     @Delete
     fun deleteNote(note: Note)
 
-    @Query("DELETE FROM notes WHERE id = :id")
-    fun deleteNote(id: Int?)
+    @Query("DELETE FROM notes WHERE id = :noteId")
+    fun deleteNoteById(noteId: Int?)
 
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): MutableList<Note>
+    fun getAllNotes(): Flow<List<Note>>
+
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    fun getNoteById(noteId: Int?): Flow<Note>
 }

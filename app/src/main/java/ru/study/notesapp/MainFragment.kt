@@ -5,33 +5,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.study.notesapp.databinding.FragmentMainBinding
 
 /**
  * Фрагмент для размещения списка заметок
  */
-class MainFragment : Fragment(), Contract.MainView, Listener {
+class MainFragment : Fragment(), Listener {
 
     private lateinit var bindingMain: FragmentMainBinding
     private lateinit var adapter: NoteAdapter
-    private var presenter: MainPresenter? = null
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         bindingMain = FragmentMainBinding.inflate(inflater)
+        mainViewModel = ViewModelProvider(this, ViewModelFactory(requireContext())).get(MainViewModel::class.java)
         return bindingMain.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-        presenter = MainPresenter(requireContext(), this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        mainViewModel.noteList.onEach {
+            adapter.updateData(it)
+        }.launchIn(lifecycleScope)
     }
 
     private fun initViews() {
@@ -52,8 +64,7 @@ class MainFragment : Fragment(), Contract.MainView, Listener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                presenter?.deleteNote(adapter.getItemByPosition(viewHolder.position).id)
-                adapter.removeItem(viewHolder.position)
+                adapter.getItemByPosition(viewHolder.position).id?.let { mainViewModel.deleteNote(it) }
             }
         })
         swapHelper.attachToRecyclerView(bindingMain.recyclerView)
@@ -66,17 +77,8 @@ class MainFragment : Fragment(), Contract.MainView, Listener {
         }
     }
 
-    override fun showNotes(noteList: MutableList<Note>) {
-        adapter.updateAdapter(noteList)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter = null
-    }
-
     override fun onNoteClick(note: Note) {
-        val action = MainFragmentDirections.actionMainFragmentToDetailsNoteFragment(note.id!!)
+        val action = MainFragmentDirections.actionMainFragmentToDetailsNoteFragment(note.id)
         findNavController().navigate(action)
     }
 }
