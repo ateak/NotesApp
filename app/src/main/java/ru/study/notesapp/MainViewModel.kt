@@ -9,9 +9,18 @@ import kotlinx.coroutines.launch
  */
 class MainViewModel(private val storageNotes: StorageNotes) : ViewModel() {
 
-    val noteList = storageNotes.allNotes
+    private val _stateNoteList = MainState(storageNotes.allNotes)
+    val stateNoteList = _stateNoteList
 
-    fun deleteNote(id: Int) {
+    fun handle(event: MainEvent) {
+        when (event) {
+            is DeleteNoteEvent -> {
+                deleteNote(event.id)
+            }
+        }
+    }
+
+    private fun deleteNote(id: Int) {
         viewModelScope.launch {
             storageNotes.removeNote(id)
         }

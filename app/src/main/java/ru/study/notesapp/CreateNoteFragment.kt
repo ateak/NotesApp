@@ -35,10 +35,14 @@ class CreateNoteFragment : Fragment() {
     private fun initViews() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
-                createNoteViewModel.saveNote(
-                    0,
-                    binding.title.text.toString(),
-                    binding.description.text.toString()
+                createNoteViewModel.handle(
+                    SaveNoteEvent(
+                        Note(
+                            0,
+                            binding.title.text.toString(),
+                            binding.description.text.toString()
+                        )
+                    )
                 )
                 findNavController().navigate(CreateNoteFragmentDirections.actionCreateNoteFragmentToMainFragment())
             }

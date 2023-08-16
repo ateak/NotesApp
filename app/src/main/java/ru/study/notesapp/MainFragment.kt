@@ -41,7 +41,7 @@ class MainFragment : Fragment(), Listener {
     override fun onResume() {
         super.onResume()
 
-        mainViewModel.noteList.onEach {
+        mainViewModel.stateNoteList.noteList.onEach {
             adapter.updateData(it)
         }.launchIn(lifecycleScope)
     }
@@ -64,7 +64,7 @@ class MainFragment : Fragment(), Listener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.getItemByPosition(viewHolder.position).id?.let { mainViewModel.deleteNote(it) }
+                adapter.getItemByPosition(viewHolder.position).id?.let { mainViewModel.handle(DeleteNoteEvent(it)) }
             }
         })
         swapHelper.attachToRecyclerView(bindingMain.recyclerView)

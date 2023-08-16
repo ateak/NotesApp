@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 
 /**
@@ -34,26 +35,29 @@ class DetailsNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        detailsNoteViewModel.selectNote(args.NoteId)
+        detailsNoteViewModel.handle(SelectNoteEvent(args.NoteId))
     }
 
     override fun onResume() {
         super.onResume()
 
-        lifecycleScope.launch {
-            detailsNoteViewModel.note.collect {
-                bindingDetailsNote.title.setText(it.title)
-                bindingDetailsNote.description.setText(it.description)
-            }
-        }
+        detailsNoteViewModel.stateNote.onEach {
+            bindingDetailsNote.title.setText(it.note.title)
+            bindingDetailsNote.description.setText(it.note.description)
+        }.launchIn(lifecycleScope)
     }
 
     override fun onPause() {
         super.onPause()
-        detailsNoteViewModel.updateNote(
-            args.NoteId,
-            bindingDetailsNote.title.text.toString(),
-            bindingDetailsNote.description.text.toString()
+
+        detailsNoteViewModel.handle(
+            UpdateNoteEvent(
+                Note(
+                    args.NoteId,
+                    bindingDetailsNote.title.text.toString(),
+                    bindingDetailsNote.description.text.toString()
+                )
+            )
         )
     }
 }

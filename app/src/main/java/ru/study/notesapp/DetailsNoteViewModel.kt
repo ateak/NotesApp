@@ -2,7 +2,7 @@ package ru.study.notesapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -10,15 +10,30 @@ import kotlinx.coroutines.launch
  */
 class DetailsNoteViewModel(private val storageNotes: StorageNotes) : ViewModel() {
 
-    lateinit var note: Flow<Note>
+    private val _stateNote = MutableStateFlow(DetailsNoteState(Note(0, "", "")))
+    val stateNote = _stateNote
 
-    fun selectNote(noteId: Int) {
-        note = storageNotes.getNote(noteId)
+    fun handle(event: DetailsNoteEvent) {
+        when (event) {
+            is SelectNoteEvent -> {
+                selectNote(event.noteId)
+            }
+
+            is UpdateNoteEvent -> {
+                updateNote(event.note)
+            }
+        }
     }
 
-    fun updateNote(id: Int, title: String, description: String) {
+    private fun selectNote(noteId: Int) {
         viewModelScope.launch {
-            storageNotes.updateNote(Note(id, title, description))
+            storageNotes.getNote(noteId).collect {
+                stateNote.value = DetailsNoteState(note = it)
+            }
         }
+    }
+
+    private fun updateNote(note: Note) {
+        storageNotes.updateNote(note)
     }
 }
