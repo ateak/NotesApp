@@ -8,17 +8,17 @@ import kotlinx.coroutines.launch
 /**
  * DetailsNoteViewModel для DetailsNoteFragment
  */
-class DetailsNoteViewModel(private val storageNotes: StorageNotes) : ViewModel() {
+class DetailsNoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
     lateinit var note: Flow<Note>
 
     fun selectNote(noteId: Int) {
-        note = storageNotes.getNote(noteId)
+        note = notesRepository.getNote(noteId)
     }
 
     fun updateNote(id: Int, title: String, description: String) {
         viewModelScope.launch {
-            storageNotes.updateNote(Note(id, title, description))
+            notesRepository.updateNote(Note(id, title, description))
         }
     }
 }

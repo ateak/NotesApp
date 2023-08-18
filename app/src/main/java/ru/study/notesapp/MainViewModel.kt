@@ -7,13 +7,13 @@ import kotlinx.coroutines.launch
 /**
  * MainViewModel для MainFragment
  */
-class MainViewModel(private val storageNotes: StorageNotes) : ViewModel() {
+class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
-    val noteList = storageNotes.allNotes
+    val noteList = notesRepository.getAllNotes()
 
     fun deleteNote(id: Int) {
         viewModelScope.launch {
-            storageNotes.removeNote(id)
+            notesRepository.removeNote(id)
         }
     }
 }
