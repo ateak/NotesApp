@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.study.notesapp.databinding.FragmentMainBinding
 
 /**
@@ -21,20 +21,21 @@ class MainFragment : Fragment(), Listener {
 
     private lateinit var bindingMain: FragmentMainBinding
     private lateinit var adapter: NoteAdapter
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel by viewModel<MainViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
         bindingMain = FragmentMainBinding.inflate(inflater)
-        mainViewModel = ViewModelProvider(this, ViewModelFactory(requireContext())).get(MainViewModel::class.java)
         return bindingMain.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initViews()
     }
 
