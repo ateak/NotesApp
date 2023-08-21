@@ -1,10 +1,11 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import ru.study.notesapp.R
 import ru.study.notesapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

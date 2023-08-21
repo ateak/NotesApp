@@ -1,4 +1,4 @@
-package ru.study.notesapp
+package ru.study.notesapp.data.storage.roomdatabase
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,27 +7,28 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
+import ru.study.notesapp.data.storage.models.NoteDb
 
 /**
  * Интерфейс для определения методов доступа к базе данных
  */
 @Dao
-interface Dao {
+interface NoteDao {
     @Insert(onConflict = REPLACE)
-    fun addNote(note: Note)
+    fun addNote(noteDb: NoteDb)
 
     @Update
-    fun updateNote(note: Note)
+    fun updateNote(noteDb: NoteDb)
 
     @Delete
-    fun deleteNote(note: Note)
+    fun deleteNote(noteDb: NoteDb)
 
     @Query("DELETE FROM notes WHERE id = :noteId")
     fun deleteNoteById(noteId: Int?)
 
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): Flow<List<Note>>
+    fun getAllNotes(): Flow<List<NoteDb>>
 
     @Query("SELECT * FROM notes WHERE id = :noteId")
-    fun getNoteById(noteId: Int?): Flow<Note>
+    fun getNoteById(noteId: Int?): Flow<NoteDb>
 }

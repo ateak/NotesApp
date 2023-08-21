@@ -1,4 +1,4 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
+import ru.study.notesapp.domain.models.Note
 
 /**
  * Фрагмент для размещения подробного описания заметки
@@ -50,9 +51,11 @@ class DetailsNoteFragment : Fragment() {
         super.onPause()
 
         detailsNoteViewModel.updateNote(
-            args.NoteId,
-            bindingDetailsNote.title.text.toString(),
-            bindingDetailsNote.description.text.toString()
+            Note(
+                args.NoteId,
+                bindingDetailsNote.title.text.toString(),
+                bindingDetailsNote.description.text.toString()
+            )
         )
     }
 }

@@ -1,6 +1,7 @@
-package ru.study.notesapp
+package ru.study.notesapp.domain.repository
 
 import kotlinx.coroutines.flow.Flow
+import ru.study.notesapp.domain.models.Note
 
 /**
  *  Интерфейс содержит методы для работы с базой данных
