@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.study.notesapp.R
 import ru.study.notesapp.databinding.FragmentMainBinding
 import ru.study.notesapp.domain.models.Note
-import ru.study.notesapp.domain.utils.Listener
+import ru.study.notesapp.presentation.utils.Listener
 
 /**
  * Фрагмент для размещения списка заметок

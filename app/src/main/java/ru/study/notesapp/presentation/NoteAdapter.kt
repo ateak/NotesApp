@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.study.notesapp.R
 import ru.study.notesapp.databinding.RecyclerviewItemBinding
 import ru.study.notesapp.domain.models.Note
-import ru.study.notesapp.domain.utils.Listener
+import ru.study.notesapp.presentation.utils.Listener
 
 /**
  * Адаптер для отрисовки элемента заметки в списке
