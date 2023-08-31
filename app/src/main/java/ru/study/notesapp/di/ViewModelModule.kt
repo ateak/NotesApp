@@ -2,9 +2,9 @@ package ru.study.notesapp.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.study.notesapp.CreateNoteViewModel
-import ru.study.notesapp.DetailsNoteViewModel
-import ru.study.notesapp.MainViewModel
+import ru.study.notesapp.presentation.CreateNoteViewModel
+import ru.study.notesapp.presentation.DetailsNoteViewModel
+import ru.study.notesapp.presentation.MainViewModel
 
 /**
  * Модуль для для создания viewmodels
@@ -13,14 +13,14 @@ import ru.study.notesapp.MainViewModel
 val viewModelModule = module {
 
     viewModel {
-        MainViewModel(notesRepository = get())
+        MainViewModel(getAllNotesUseCase = get(), deleteNoteUseCase = get())
     }
 
     viewModel {
-        CreateNoteViewModel(notesRepository = get())
+        CreateNoteViewModel(saveNoteUseCase = get())
     }
 
     viewModel {
-        DetailsNoteViewModel(notesRepository = get())
+        DetailsNoteViewModel(selectNoteUseCase = get(), updateNoteUseCase = get())
     }
 }

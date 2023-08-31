@@ -1,14 +1,14 @@
-package ru.study.notesapp
+package ru.study.notesapp.data.storage.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Схема таблицы для базы данных
+ * Модель заметки для хранения данных внутри локального хранилища (data слой)
  */
 @Entity(tableName = "notes")
-data class Note(
+data class NoteDb(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     @ColumnInfo(name = "title")

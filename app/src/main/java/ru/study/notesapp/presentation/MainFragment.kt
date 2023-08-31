@@ -1,4 +1,4 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.study.notesapp.R
 import ru.study.notesapp.databinding.FragmentMainBinding
+import ru.study.notesapp.domain.models.Note
+import ru.study.notesapp.presentation.utils.Listener
 
 /**
  * Фрагмент для размещения списка заметок

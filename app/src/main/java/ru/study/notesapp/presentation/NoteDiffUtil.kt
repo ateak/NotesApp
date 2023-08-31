@@ -1,6 +1,7 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import androidx.recyclerview.widget.DiffUtil
+import ru.study.notesapp.domain.models.Note
 
 /**
  * Класс для обновления данных в списке заметок на Main Fragment

@@ -1,18 +1,21 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.study.notesapp.R
 import ru.study.notesapp.databinding.RecyclerviewItemBinding
+import ru.study.notesapp.domain.models.Note
+import ru.study.notesapp.presentation.utils.Listener
 
 /**
  * Адаптер для отрисовки элемента заметки в списке
  */
 class NoteAdapter(val listener: Listener) : RecyclerView.Adapter<NoteAdapter.NoteHolder>() {
 
-    private var oldNoteList = emptyList<Note>()
+    private var oldNoteList = listOf<Note>()
 
     class NoteHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val bindingAdapter = RecyclerviewItemBinding.bind(itemView)

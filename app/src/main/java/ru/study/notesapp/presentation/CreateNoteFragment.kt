@@ -1,4 +1,4 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.study.notesapp.databinding.FragmentCreateNoteBinding
+import ru.study.notesapp.domain.models.Note
 
 /**
  * Фрагмент, на котором размещены поля для создания заметки
@@ -36,9 +37,11 @@ class CreateNoteFragment : Fragment() {
         with(binding.buttonCreateNote) {
             this.setOnClickListener {
                 createNoteViewModel.saveNote(
-                    0,
-                    binding.title.text.toString(),
-                    binding.description.text.toString()
+                    Note(
+                        0,
+                        binding.title.text.toString(),
+                        binding.description.text.toString()
+                    )
                 )
                 findNavController().navigate(CreateNoteFragmentDirections.actionCreateNoteFragmentToMainFragment())
             }

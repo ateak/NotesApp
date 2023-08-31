@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="ru.study.notesapp.MainFragment"
+        android:name="ru.study.notesapp.presentation.MainFragment"
         android:label=""
         tools:layout="@layout/fragment_main" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/createNoteFragment"
-        android:name="ru.study.notesapp.CreateNoteFragment"
+        android:name="ru.study.notesapp.presentation.CreateNoteFragment"
         android:label=""
         tools:layout="@layout/fragment_create_note" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsNoteFragment"
-        android:name="ru.study.notesapp.DetailsNoteFragment"
+        android:name="ru.study.notesapp.presentation.DetailsNoteFragment"
         android:label=""
         tools:layout="@layout/fragment_details_note" >
         <action

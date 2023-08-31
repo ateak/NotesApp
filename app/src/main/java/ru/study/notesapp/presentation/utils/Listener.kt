@@ -1,4 +1,6 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation.utils
+
+import ru.study.notesapp.domain.models.Note
 
 /**
  * Интерфейс содержит функцию для обработки клика по заметке в NoteAdapter
