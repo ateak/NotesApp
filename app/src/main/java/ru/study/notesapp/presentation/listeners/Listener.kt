@@ -1,4 +1,4 @@
-package ru.study.notesapp.presentation.utils
+package ru.study.notesapp.presentation.listeners
 
 import ru.study.notesapp.domain.models.Note
 
