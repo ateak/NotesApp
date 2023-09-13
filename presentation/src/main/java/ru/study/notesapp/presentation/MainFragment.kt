@@ -12,11 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.study.notesapp.R
-import ru.study.notesapp.databinding.FragmentMainBinding
 import ru.study.notesapp.domain.models.Note
+import ru.study.notesapp.presentation.databinding.FragmentMainBinding
 import ru.study.notesapp.presentation.utils.Listener
-
 /**
  * Фрагмент для размещения списка заметок
  */
@@ -68,7 +66,7 @@ class MainFragment : Fragment(), Listener {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                adapter.getItemByPosition(viewHolder.position).id?.let { mainViewModel.deleteNote(it) }
+                adapter.getItemByPosition(viewHolder.bindingAdapterPosition).id.let { mainViewModel.deleteNote(it) }
             }
         })
         swapHelper.attachToRecyclerView(bindingMain.recyclerView)

@@ -9,8 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.study.notesapp.databinding.FragmentDetailsNoteBinding
 import ru.study.notesapp.domain.models.Note
+import ru.study.notesapp.presentation.databinding.FragmentDetailsNoteBinding
 
 /**
  * Фрагмент для размещения подробного описания заметки

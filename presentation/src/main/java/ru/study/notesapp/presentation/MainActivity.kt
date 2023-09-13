@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import ru.study.notesapp.R
-import ru.study.notesapp.databinding.ActivityMainBinding
+import ru.study.notesapp.presentation.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding

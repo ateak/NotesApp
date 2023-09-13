@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.study.notesapp.databinding.FragmentCreateNoteBinding
 import ru.study.notesapp.domain.models.Note
+import ru.study.notesapp.presentation.databinding.FragmentCreateNoteBinding
 
 /**
  * Фрагмент, на котором размещены поля для создания заметки

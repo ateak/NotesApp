@@ -1,4 +1,4 @@
-package ru.study.notesapp
+package ru.study.notesapp.presentation
 
 import org.junit.Test
 
